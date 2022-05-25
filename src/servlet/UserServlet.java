@@ -24,4 +24,20 @@ public class UserServlet extends BaseServlet {
         request.setAttribute("pagination", pagination);
         return "jsp/admin/listUser.jsp";
     }
+
+    /**
+     * littlestar : 冻结用户
+     */
+    public String freeze(HttpServletRequest request, HttpServletResponse response) {
+        service.freeze(Integer.parseInt(request.getParameter("uid")));
+        return "@" + request.getServletContext().getContextPath() + "/admin/user_list";
+    }
+
+    /**
+     * littlestar : 解冻用户
+     */
+    public String unfreeze(HttpServletRequest request, HttpServletResponse response) {
+        service.unfreeze(Integer.parseInt(request.getParameter("uid")));
+        return "@" + request.getServletContext().getContextPath() + "/admin/user_list";
+    }
 }

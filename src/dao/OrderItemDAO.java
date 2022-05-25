@@ -9,6 +9,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author littlestar
+ */
 public class OrderItemDAO {
     public int getTotal() {
         int total = 0;

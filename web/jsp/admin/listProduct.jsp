@@ -38,6 +38,7 @@
         </thead>
         <tbody>
 
+        <jsp:useBean id="products" scope="request" type="java.util.List"/>
         <c:forEach items="${products}" var="p" varStatus="vs">
             <tr>
                 <th scope="row">${p.id}</th>
@@ -48,7 +49,10 @@
                 <td>${p.nowPrice}</td>
                 <td>${p.stock}</td>
                 <td><a href="productImage_list?pid=${p.id}&cid=${category.id}"><span class="glyphicon glyphicon-picture"></span></a></td>
-                <td><a href="product_editPropertyValue?pid=${p.id}&cid=${category.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
+<%--                /**--%>
+<%--                * littlestar FIXME :    属性跳转问题--%>
+<%--                */--%>
+                <td><a href="product_editPropertyValue?pid=${p.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
                 <td><a href="product_edit?pid=${p.id}&cid=${category.id}"><span class="glyphicon glyphicon-edit"></span></a></td>
                 <td><a href="product_delete?pid=${p.id}&cid=${category.id}" class="delete-button"><span class="glyphicon glyphicon-trash"></span></a></td>
             </tr>

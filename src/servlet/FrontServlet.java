@@ -143,7 +143,8 @@ public class FrontServlet extends BaseServlet {
         cartItem.setNumber(num);
         cartItem.setSum(cartItem.getProduct().getNowPrice().multiply(new BigDecimal(cartItem.getNumber())));
         request.getSession().setAttribute("tempCartItem", cartItem);
-        return "@buy?ciid=-1"; //-1的话提醒buy页面从session取cartItem而不是从数据里面拿
+        //-1的话提醒buy页面从session取cartItem而不是从数据里面拿
+        return "@buy?ciid=-1";
     }
 
     public String buy(HttpServletRequest request, HttpServletResponse response) {
@@ -153,7 +154,8 @@ public class FrontServlet extends BaseServlet {
         BigDecimal total = new BigDecimal(0);
         for (String cartItemIdString : cartItemIdStrings) {
             int cartItemId = Integer.parseInt(cartItemIdString);
-            if (cartItemId == -1) {//点的是立即购买，从session里面拿cartItem
+            if (cartItemId == -1) {
+                //点的是立即购买，从session里面拿cartItem
                 CartItem cartItem = (CartItem) request.getSession().getAttribute("tempCartItem");
                 total = total.add(cartItem.getSum());
                 cartItem.setId(-1);
@@ -161,7 +163,8 @@ public class FrontServlet extends BaseServlet {
                 break;
             } else {//从购物车中来的
                 List<CartItem> userList = new CartItemService().listByUser(user.getId());
-                for (CartItem userItem : userList) { //判断是否是该用户的订单
+                for (CartItem userItem : userList) {
+                    //判断是否是该用户的订单
                     if (userItem.getId() == cartItemId) {
                         CartItem cartItem = new CartItemService().get(cartItemId);
                         total = total.add(cartItem.getSum());
@@ -247,8 +250,9 @@ public class FrontServlet extends BaseServlet {
 
     public String deleteCartItem(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
-        if (null == user)
+        if (null == user) {
             return "%fail";
+        }
         int ciid = Integer.parseInt(request.getParameter("ciid"));
         List<CartItem> cartItems = new CartItemService().listByUser(user.getId());
         for (CartItem item : cartItems) {

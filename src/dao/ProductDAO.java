@@ -1,20 +1,23 @@
 package dao;
 
 import bean.Product;
-import util.DbUtil;
 import util.DateUtil;
+import util.DbUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author littlestar
+ */
 public class ProductDAO {
     public int getTotal(int cid) {
         int total = 0;
         String sql = "SELECT count(*) FROM product WHERE cid=? and deleteAt IS NULL";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setInt(1,cid);
+            ps.setInt(1, cid);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 total = rs.getInt(1);
@@ -48,11 +51,12 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
-    public void update(Product bean){
+
+    public void update(Product bean) {
         String sql = "update product set cid=?,name=?,subTitle=? ,originalPrice=?,nowPrice=?," +
                 "stock=?,createDate=? where deleteAt is null and id = ?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, bean.getCategory().getId());
             ps.setString(2, bean.getName());
             ps.setString(3, bean.getSubTitle());
@@ -62,30 +66,31 @@ public class ProductDAO {
             ps.setTimestamp(7, DateUtil.d2t(bean.getCreateDate()));
             ps.setInt(8, bean.getId());
             ps.execute();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-    public void delete(int id){
-        String sql = "update product set deleteAt = ? where deleteAt is null and id = ?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setTimestamp(1, DateUtil.nowTimestamp());
-            ps.setInt(2,id);
-            ps.execute();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Product get(int id){
+    public void delete(int id) {
+        String sql = "update product set deleteAt = ? where deleteAt is null and id = ?";
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setTimestamp(1, DateUtil.nowTimestamp());
+            ps.setInt(2, id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Product get(int id) {
         Product bean = null;
         String sql = "select * from product where deleteAt is null and id=?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setInt(1,id);
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 bean = new Product();
                 bean.setId(rs.getInt("id"));
                 bean.setCategory(new CategoryDAO().get(rs.getInt("cid")));
@@ -96,23 +101,23 @@ public class ProductDAO {
                 bean.setStock(rs.getInt("stock"));
                 bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return bean;
     }
 
 
-    public List<Product> listByCategory(int cid, int start , int count){
+    public List<Product> listByCategory(int cid, int start, int count) {
         List<Product> beans = new ArrayList<>();
         String sql = "select * from product where cid = ? and deleteAt is null ORDER BY id desc limit ?,?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setInt(1,cid);
-            ps.setInt(2,start);
-            ps.setInt(3,count);
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, cid);
+            ps.setInt(2, start);
+            ps.setInt(3, count);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Product bean = new Product();
                 bean.setId(rs.getInt("id"));
                 bean.setCategory(new CategoryDAO().get(rs.getInt("cid")));
@@ -124,24 +129,24 @@ public class ProductDAO {
                 bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
                 beans.add(bean);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return beans;
     }
 
-    public List<Product> listBySearch(String keyword, int start , int count){
+    public List<Product> listBySearch(String keyword, int start, int count) {
         List<Product> beans = new ArrayList<>();
-        if(null==keyword||0==keyword.trim().length())
+        if (null == keyword || 0 == keyword.trim().length())
             return beans;
         String sql = "select * from product where name like ? and deleteAt  is null ORDER BY id desc limit ?,?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setString(1,"%"+keyword.trim()+"%");
-            ps.setInt(2,start);
-            ps.setInt(3,count);
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword.trim() + "%");
+            ps.setInt(2, start);
+            ps.setInt(3, count);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Product bean = new Product();
                 bean.setId(rs.getInt("id"));
                 bean.setCategory(new CategoryDAO().get(rs.getInt("cid")));
@@ -153,7 +158,7 @@ public class ProductDAO {
                 bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
                 beans.add(bean);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return beans;

@@ -24,9 +24,9 @@ import java.util.List;
 /**
  * @author littlestar
  */
-@WebServlet(name = "ProductServlet", value = "/productImage.servlet")
+@WebServlet(name = "ProductServlet", value = "/product.servlet")
 public class ProductServlet extends BaseServlet {
-    private ProductService service = new ProductService();
+    private final ProductService service = new ProductService();
 
     public String list(HttpServletRequest request, HttpServletResponse response) {
         int cid = Integer.parseInt(request.getParameter("cid"));

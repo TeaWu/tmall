@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /**
  * 本类会处理所有请求，在此分发Servlet方法
+ *
  * @author littlestar
  */
 public class BackServletFilter implements Filter {
@@ -41,10 +42,7 @@ public class BackServletFilter implements Filter {
             return;
         }
         //配置超级管理员权限的方法
-        String[] superAdminPage = new String[]{
-                "delete",
-                "addUpdate",
-                "updatePropertyValue",
+        String[] superAdminPage = new String[]{"delete", "addUpdate", "updatePropertyValue",
         };
         // 访问admin目录下
         if (uri.startsWith("/admin/")) {
@@ -77,22 +75,15 @@ public class BackServletFilter implements Filter {
                     throw new ServletException("权限不足，请确保有superAdmin权限");
                 }
             }
-            response.sendRedirect(request.getServletContext().getContextPath()+"/login?refer=admin");
+            response.sendRedirect(request.getServletContext().getContextPath() + "/login?refer=admin");
             return;
         }
 
         //配置不需登录即可访问的方法：
-        String[] noNeedAuthPage = new String[]{
-                "home",
-                "checkLogin",
-                "register",
-                "login",
-                "product",
-                "category",
-                "loginIn",
-                "registerAdd",
-                "search"};
+        String[] noNeedAuthPage = new String[]{"home", "checkLogin", "register",
+                "login", "product", "category", "loginIn", "registerAdd", "search"};
         //如果uri根目录不含 "." (非资源)则统一交由前台处理
+        //contains()当且仅当此字符串包含指定的字符值序列时返回true
         if (!(uri.contains(".") || (uri.lastIndexOf('/') > 0))) {
             String servletPath = "front.servlet";
             String method = uri.substring(1);

@@ -1,7 +1,6 @@
 package servlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +10,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author littlestar
+ * 读取method ，反射调用相关方法，并把 request 和 responce 传进去
  */
 public abstract class BaseServlet extends HttpServlet {
     @Override
@@ -23,7 +23,7 @@ public abstract class BaseServlet extends HttpServlet {
             String redirect = m.invoke(this, req, resp).toString();
             if (redirect.startsWith("@")) {
                 resp.sendRedirect(redirect.substring(1));
-            } else if (redirect.startsWith("%")) {
+                } else if (redirect.startsWith("%")) {
                 resp.getWriter().print(redirect.substring(1));
             } else {
                 req.getRequestDispatcher(redirect).forward(req, resp);

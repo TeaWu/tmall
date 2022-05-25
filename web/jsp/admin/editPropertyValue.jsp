@@ -31,10 +31,11 @@
         <div class="panel-body">
 
             <form class="form-horizontal" method="get" id="add-form" action="product_updatePropertyValue">
-
                 <div class="form-group">
+                    <jsp:useBean id="propsMap" scope="request" type="java.util.Map"/>
                     <c:forEach items="${propsMap}" var="map" varStatus="vs">
-                        <label for="name${vs.count}" class="col-sm-1 control-label" style="margin-bottom: 10px;">${map.key.name}</label>
+                        <label for="name${vs.count}" class="col-sm-1 control-label"
+                               style="margin-bottom: 10px;">${map.key.name}</label>
                         <div class="col-sm-5" style="margin-bottom: 10px;">
                             <input type="text" class="form-control" id="name${vs.count}" name="ptid_${map.key.id}"
                                    placeholder="请输入${map.key.name}" value="${map.value.value}">

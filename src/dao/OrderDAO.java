@@ -1,8 +1,8 @@
 package dao;
 
 import bean.Order;
-import util.DbUtil;
 import util.DateUtil;
+import util.DbUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,12 +54,13 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
-    public void update(Order bean){
+
+    public void update(Order bean) {
         String sql = "update order_ set uid=?,orderCode=?,address=?,post=?,receiver=?," +
                 "mobile=?,userMessage=?,createDate=?,payDate=?,deliverDate=?,confirmDate=?,status=?,sum=?" +
                 " where deleteAt is null and id = ?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, bean.getUser().getId());
             ps.setString(2, bean.getOrderCode());
             ps.setString(3, bean.getAddress());
@@ -75,30 +76,31 @@ public class OrderDAO {
             ps.setBigDecimal(13, bean.getSum());
             ps.setInt(14, bean.getId());
             ps.execute();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-    public void delete(int id){
-        String sql = "update order_ set deleteAt = ? where deleteAt is null and id = ?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setTimestamp(1, DateUtil.nowTimestamp());
-            ps.setInt(2,id);
-            ps.execute();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Order get(int id){
+    public void delete(int id) {
+        String sql = "update order_ set deleteAt = ? where deleteAt is null and id = ?";
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setTimestamp(1, DateUtil.nowTimestamp());
+            ps.setInt(2, id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Order get(int id) {
         Order bean = null;
         String sql = "select * from order_ where deleteAt is null and id=?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setInt(1,id);
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 bean = new Order();
                 bean.setId(rs.getInt("id"));
                 bean.setUser(new UserDAO().get(rs.getInt("uid")));
@@ -115,22 +117,22 @@ public class OrderDAO {
                 bean.setConfirmDate(DateUtil.t2d(rs.getTimestamp("confirmDate")));
                 bean.setStatus(rs.getString("status"));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return bean;
     }
 
 
-    public List<Order> list(int start , int count){
+    public List<Order> list(int start, int count) {
         List<Order> beans = new ArrayList<>();
         String sql = "select * from order_ where deleteAt is null ORDER BY id DESC limit ?,?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setInt(1,start);
-            ps.setInt(2,count);
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, start);
+            ps.setInt(2, count);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Order bean = new Order();
                 bean.setId(rs.getInt("id"));
                 bean.setUser(new UserDAO().get(rs.getInt("uid")));
@@ -148,26 +150,26 @@ public class OrderDAO {
                 bean.setStatus(rs.getString("status"));
                 beans.add(bean);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return beans;
     }
 
     public List<Order> list() {
-        return list(0,Short.MAX_VALUE);
+        return list(0, Short.MAX_VALUE);
     }
 
-    public List<Order> list(int uid,int start , int count){
+    public List<Order> list(int uid, int start, int count) {
         List<Order> beans = new ArrayList<>();
         String sql = "select * from order_ where uid = ? and deleteAt is null ORDER BY id DESC limit ?,?";
-        try(Connection c = DbUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setInt(1,uid);
-            ps.setInt(2,start);
-            ps.setInt(3,count);
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, uid);
+            ps.setInt(2, start);
+            ps.setInt(3, count);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Order bean = new Order();
                 bean.setId(rs.getInt("id"));
                 bean.setUser(new UserDAO().get(rs.getInt("uid")));
@@ -185,7 +187,7 @@ public class OrderDAO {
                 bean.setStatus(rs.getString("status"));
                 beans.add(bean);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return beans;
