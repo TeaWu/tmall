@@ -27,7 +27,8 @@
             <th scope="col">用户组</th>
             <th scope="col">查看资料</th>
             <th scope="col">用户状态</th>
-            <th scope="col">操作</th>
+            <th scope="col">冻结操作</th>
+            <th scope="col">删除操作</th>
         </tr>
         </thead>
         <tbody>
@@ -41,24 +42,29 @@
                 <td>
                     <button class="btn btn-primary btn-xs detail-btn">查看详情</button>
                 </td>
-                <c:if test="${u.state == 1}">
+                <c:if test="${u.status == 1}">
                     <td>正常</td>
                 </c:if>
-                <c:if test="${u.state == 0}">
+                <c:if test="${u.status == 0}">
                     <td style="color: #d9534f">已冻结</td>
                 </c:if>
                 <td>
-                    <c:if test="${u.state == 1}">
+                    <c:if test="${u.status == 1}">
                         <a href="user_freeze?uid=${u.id}">
                             <button class="btn btn-primary btn-xs detail-btn">冻结</button>
                         </a>
                     </c:if>
-                    <c:if test="${u.state == 0}">
+                    <c:if test="${u.status == 0}">
                         <a href="user_unfreeze?uid=${u.id}">
                             <button class="btn btn-primary btn-xs detail-btn" style="background-color: #d9534f">解冻
                             </button>
                         </a>
                     </c:if>
+                </td>
+                <td>
+                    <a href="user_delete?uid=${u.id}">
+                        <button class="btn btn-primary btn-xs detail-btn">删除</button>
+                    </a>
                 </td>
                     <%--                //littlestar TODO : 用户组修改 --%>
             </tr>
@@ -75,6 +81,22 @@
                                 <tr>
                                     <td>用户组：</td>
                                     <td>${u.group}</td>
+                                </tr>
+                                <tr>
+                                    <td>用户状态：</td>
+                                    <td>${u.status == 1 ? "正常" : "已冻结"}</td>
+                                </tr>
+                                <tr>
+                                    <td>用户默认地址收货人：</td>
+                                    <td>${u.receiver}</td>
+                                </tr>
+                                <tr>
+                                    <td>用户默认地址电话：</td>
+                                    <td>${u.mobile}</td>
+                                </tr>
+                                <tr>
+                                    <td>用户默认地址：</td>
+                                    <td>${u.address}</td>
                                 </tr>
                             </table>
                         </div>

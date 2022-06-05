@@ -24,26 +24,23 @@ public class OrderDAO {
         return total;
     }
 
-
     public void add(Order bean) {
-        String sql = "INSERT INTO order_ (`uid`,`orderCode`,`address`,`post`,`receiver`," +
-                "`mobile`,`userMessage`,`createDate`,`payDate`,`deliverDate`,`confirmDate`,`status`,`sum`) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO order_ (`uid`,`orderCode`,`address`,`receiver`," +
+                "`mobile`,`createDate`,`payDate`,`deliverDate`,`confirmDate`,`status`,`sum`) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, bean.getUser().getId());
             ps.setString(2, bean.getOrderCode());
             ps.setString(3, bean.getAddress());
-            ps.setString(4, bean.getPost());
-            ps.setString(5, bean.getReceiver());
-            ps.setString(6, bean.getMobile());
-            ps.setString(7, bean.getUserMessage());
-            ps.setTimestamp(8, DateUtil.d2t(bean.getCreateDate()));
-            ps.setTimestamp(9, DateUtil.d2t(bean.getPayDate()));
-            ps.setTimestamp(10, DateUtil.d2t(bean.getDeliverDate()));
-            ps.setTimestamp(11, DateUtil.d2t(bean.getConfirmDate()));
-            ps.setString(12, bean.getStatus());
-            ps.setBigDecimal(13, bean.getSum());
+            ps.setString(4, bean.getReceiver());
+            ps.setString(5, bean.getMobile());
+            ps.setTimestamp(6, DateUtil.d2t(bean.getCreateDate()));
+            ps.setTimestamp(7, DateUtil.d2t(bean.getPayDate()));
+            ps.setTimestamp(8, DateUtil.d2t(bean.getDeliverDate()));
+            ps.setTimestamp(9, DateUtil.d2t(bean.getConfirmDate()));
+            ps.setString(10, bean.getStatus());
+            ps.setBigDecimal(11, bean.getSum());
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -56,30 +53,33 @@ public class OrderDAO {
     }
 
     public void update(Order bean) {
-        String sql = "update order_ set uid=?,orderCode=?,address=?,post=?,receiver=?," +
-                "mobile=?,userMessage=?,createDate=?,payDate=?,deliverDate=?,confirmDate=?,status=?,sum=?" +
+        String sql = "update order_ set uid=?,orderCode=?,address=?,receiver=?," +
+                "mobile=?,createDate=?,payDate=?,deliverDate=?,confirmDate=?,status=?,sum=?" +
                 " where deleteAt is null and id = ?";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, bean.getUser().getId());
             ps.setString(2, bean.getOrderCode());
             ps.setString(3, bean.getAddress());
-            ps.setString(4, bean.getPost());
-            ps.setString(5, bean.getReceiver());
-            ps.setString(6, bean.getMobile());
-            ps.setString(7, bean.getUserMessage());
-            ps.setTimestamp(8, DateUtil.d2t(bean.getCreateDate()));
-            ps.setTimestamp(9, DateUtil.d2t(bean.getPayDate()));
-            ps.setTimestamp(10, DateUtil.d2t(bean.getDeliverDate()));
-            ps.setTimestamp(11, DateUtil.d2t(bean.getConfirmDate()));
-            ps.setString(12, bean.getStatus());
-            ps.setBigDecimal(13, bean.getSum());
-            ps.setInt(14, bean.getId());
+            ps.setString(4, bean.getReceiver());
+            ps.setString(5, bean.getMobile());
+            ps.setTimestamp(6, DateUtil.d2t(bean.getCreateDate()));
+            ps.setTimestamp(7, DateUtil.d2t(bean.getPayDate()));
+            ps.setTimestamp(8, DateUtil.d2t(bean.getDeliverDate()));
+            ps.setTimestamp(9, DateUtil.d2t(bean.getConfirmDate()));
+            ps.setString(10, bean.getStatus());
+            ps.setBigDecimal(11, bean.getSum());
+            ps.setInt(12, bean.getId());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 更新收件人，地址，电话
+     */
+
 
     public void delete(int id) {
         String sql = "update order_ set deleteAt = ? where deleteAt is null and id = ?";
@@ -107,10 +107,8 @@ public class OrderDAO {
                 bean.setOrderCode(rs.getString("orderCode"));
                 bean.setSum(rs.getBigDecimal("sum"));
                 bean.setAddress(rs.getString("address"));
-                bean.setPost(rs.getString("post"));
                 bean.setReceiver(rs.getString("receiver"));
                 bean.setMobile(rs.getString("mobile"));
-                bean.setUserMessage(rs.getString("userMessage"));
                 bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
                 bean.setPayDate(DateUtil.t2d(rs.getTimestamp("payDate")));
                 bean.setDeliverDate(DateUtil.t2d(rs.getTimestamp("deliverDate")));
@@ -122,7 +120,6 @@ public class OrderDAO {
         }
         return bean;
     }
-
 
     public List<Order> list(int start, int count) {
         List<Order> beans = new ArrayList<>();
@@ -139,10 +136,8 @@ public class OrderDAO {
                 bean.setOrderCode(rs.getString("orderCode"));
                 bean.setSum(rs.getBigDecimal("sum"));
                 bean.setAddress(rs.getString("address"));
-                bean.setPost(rs.getString("post"));
                 bean.setReceiver(rs.getString("receiver"));
                 bean.setMobile(rs.getString("mobile"));
-                bean.setUserMessage(rs.getString("userMessage"));
                 bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
                 bean.setPayDate(DateUtil.t2d(rs.getTimestamp("payDate")));
                 bean.setDeliverDate(DateUtil.t2d(rs.getTimestamp("deliverDate")));
@@ -175,11 +170,9 @@ public class OrderDAO {
                 bean.setUser(new UserDAO().get(rs.getInt("uid")));
                 bean.setOrderCode(rs.getString("orderCode"));
                 bean.setAddress(rs.getString("address"));
-                bean.setPost(rs.getString("post"));
                 bean.setReceiver(rs.getString("receiver"));
                 bean.setSum(rs.getBigDecimal("sum"));
                 bean.setMobile(rs.getString("mobile"));
-                bean.setUserMessage(rs.getString("userMessage"));
                 bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
                 bean.setPayDate(DateUtil.t2d(rs.getTimestamp("payDate")));
                 bean.setDeliverDate(DateUtil.t2d(rs.getTimestamp("deliverDate")));

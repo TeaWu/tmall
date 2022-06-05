@@ -15,10 +15,8 @@ public class Order {
     private User user;
     private String orderCode;
     private String address;
-    private String post;
     private String receiver;
     private String mobile;
-    private String userMessage;
     private Date createDate;
     private Date payDate;
     private BigDecimal sum;

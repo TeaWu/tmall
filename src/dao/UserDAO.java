@@ -57,6 +57,20 @@ public class UserDAO {
         }
     }
 
+    public void updateReceiverInfo(String receiver, String mobile, String address, int id) {
+        String sql = "update user set receiver=?,mobile=?,address=? where deleteAt is null and id = ?";
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, receiver);
+            ps.setString(2, mobile);
+            ps.setString(3, address);
+            ps.setInt(4, id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void delete(int id) {
         String sql = "update user set deleteAt = ? where deleteAt is null and id = ?";
         try (Connection c = DbUtil.getConnection();
@@ -83,7 +97,10 @@ public class UserDAO {
                 bean.setName(rs.getString("name"));
                 bean.setGroup(rs.getString("group_"));
                 bean.setPassword(rs.getString("password"));
-                bean.setState(rs.getInt("state"));
+                bean.setStatus(rs.getInt("status"));
+                bean.setReceiver(rs.getString("receiver"));
+                bean.setMobile(rs.getString("mobile"));
+                bean.setAddress(rs.getString("address"));
                 beans.add(bean);
             }
         } catch (SQLException e) {
@@ -106,7 +123,10 @@ public class UserDAO {
                 bean.setName(rs.getString("name"));
                 bean.setGroup(rs.getString("group_"));
                 bean.setPassword(rs.getString("password"));
-                bean.setState(rs.getInt("state"));
+                bean.setStatus(rs.getInt("status"));
+                bean.setReceiver(rs.getString("receiver"));
+                bean.setMobile(rs.getString("mobile"));
+                bean.setAddress(rs.getString("address"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,7 +147,10 @@ public class UserDAO {
                 bean.setGroup(rs.getString("group_"));
                 bean.setName(rs.getString("name"));
                 bean.setPassword(rs.getString("password"));
-                bean.setState(rs.getInt("state"));
+                bean.setStatus(rs.getInt("status"));
+                bean.setReceiver(rs.getString("receiver"));
+                bean.setMobile(rs.getString("mobile"));
+                bean.setAddress(rs.getString("address"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -149,7 +172,10 @@ public class UserDAO {
                 bean.setName(rs.getString("name"));
                 bean.setPassword(rs.getString("password"));
                 bean.setGroup(rs.getString("group_"));
-                bean.setState(rs.getInt("state"));
+                bean.setStatus(rs.getInt("status"));
+                bean.setReceiver(rs.getString("receiver"));
+                bean.setMobile(rs.getString("mobile"));
+                bean.setAddress(rs.getString("address"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -159,11 +185,26 @@ public class UserDAO {
 
 
     public void freezeOption(int id, String flag) {
-        String sql = "update user set state = ? where deleteAt is null and id = ?";
+        String sql = "update user set status = ? where deleteAt is null and id = ?";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setInt(1, "freeze".equals(flag) ? 0 : 1);
+            ps.setInt(1, "freeze".equals(flag) ? 0 :1);
             ps.setInt(2, id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUser(User bean) {
+        String sql = "update user set name = ? , receiver = ? , mobile = ? , address = ? where deleteAt is null and id = ?";
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, bean.getName());
+            ps.setString(2, bean.getReceiver());
+            ps.setString(3, bean.getMobile());
+            ps.setString(4, bean.getAddress());
+            ps.setInt(5, bean.getId());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();

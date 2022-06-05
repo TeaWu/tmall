@@ -84,6 +84,7 @@
             </thead>
             <tbody>
 
+            <jsp:useBean id="detailImages" scope="request" type="java.util.List"/>
             <c:forEach items="${detailImages}" var="ti" varStatus="vs">
                 <tr>
                     <th scope="row">${ti.id}</th>

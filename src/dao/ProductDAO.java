@@ -137,8 +137,9 @@ public class ProductDAO {
 
     public List<Product> listBySearch(String keyword, int start, int count) {
         List<Product> beans = new ArrayList<>();
-        if (null == keyword || 0 == keyword.trim().length())
+        if (null == keyword || 0 == keyword.trim().length()) {
             return beans;
+        }
         String sql = "select * from product where name like ? and deleteAt  is null ORDER BY id desc limit ?,?";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -164,4 +165,27 @@ public class ProductDAO {
         return beans;
     }
 
+    public List<Product> list() {
+        List<Product> beans = new ArrayList<>();
+        String sql = "select * from product where deleteAt is null ORDER BY id desc";
+        try (Connection c = DbUtil.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Product bean = new Product();
+                bean.setId(rs.getInt("id"));
+                bean.setCategory(new CategoryDAO().get(rs.getInt("cid")));
+                bean.setName(rs.getString("name"));
+                bean.setSubTitle(rs.getString("subTitle"));
+                bean.setOriginalPrice(rs.getBigDecimal("originalPrice"));
+                bean.setNowPrice(rs.getBigDecimal("nowPrice"));
+                bean.setStock(rs.getInt("stock"));
+                bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
+                beans.add(bean);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beans;
+    }
 }

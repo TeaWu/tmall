@@ -18,7 +18,7 @@
     <ol class="breadcrumb">
         <li>评论管理</li>
     </ol>
-    <table class="table">
+    <table class="table table-hover table-striped">
         <thead>
         <tr>
             <th scope="col">#</th>

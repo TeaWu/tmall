@@ -7,6 +7,9 @@ import dao.OrderDAO;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @author littlestar
+ */
 public class OrderService {
     public static class OrderType {
         public static final String WAIT_PAY = "waitPay";
@@ -14,8 +17,9 @@ public class OrderService {
         public static final String WAIT_CONFIRM = "waitConfirm";
         public static final String WAIT_REVIEW = "waitReview";
         public static final String FINISH = "finish";
+        public static final String CANCEL = "cancel";
     }
-    private OrderDAO dao = new OrderDAO();
+    private final OrderDAO dao = new OrderDAO();
     public int getTotal() {return dao.getTotal();}
     public void add(Order bean) {
         dao.add(bean);
@@ -23,6 +27,8 @@ public class OrderService {
     public void update(Order bean) {
         dao.update(bean);
     }
+
+
     public void delete(int id) {
         dao.delete(id);
     }

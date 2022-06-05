@@ -5,9 +5,12 @@ import dao.ProductDAO;
 
 import java.util.List;
 
+/**
+ * @author littlestar
+ */
 public class ProductService {
 
-    private ProductDAO dao = new ProductDAO();
+    private final ProductDAO dao = new ProductDAO();
     public int getTotal(int cid){return dao.getTotal(cid);}
     public void add(Product bean) {
         dao.add(bean);
@@ -32,6 +35,11 @@ public class ProductService {
         for(Product rawProduct : rawProductList){
             fill(rawProduct);
         }
+    }
+    public List<Product> list(){
+        List<Product> productList = dao.list();
+        fill(productList);
+        return productList;
     }
     public List<Product> listByCategory(int cid, int start , int count){
         List<Product> products =  dao.listByCategory(cid,start,count);

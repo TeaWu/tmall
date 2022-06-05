@@ -1,6 +1,6 @@
 package bean;
 
-import lombok.*;
+import lombok.Data;
 
 /**
  * @author littlestar

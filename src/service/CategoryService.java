@@ -5,43 +5,51 @@ import bean.Product;
 import dao.CategoryDAO;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author littlestar
  */
 public class CategoryService {
-    private CategoryDAO dao = new CategoryDAO();
+    private final CategoryDAO dao = new CategoryDAO();
 
     public int getTotal() {
         return dao.getTotal();
     }
+
     public void add(Category bean) {
         dao.add(bean);
     }
+
     public void update(Category bean) {
         dao.update(bean);
     }
+
     public void delete(int id) {
         dao.delete(id);
     }
-    public Category get(int id){
+
+    public Category get(int id) {
         return dao.get(id);
     }
-    public List<Category> list(int start , int count){
-        return dao.list(start,count);
+
+    public List<Category> list(int start, int count) {
+        return dao.list(start, count);
     }
-    public List<Category> list(){
-        return dao.list(0,Short.MAX_VALUE);
+
+    public List<Category> list() {
+        return dao.list(0, Short.MAX_VALUE);
     }
-    public List<Category> listInHome(){
+
+    public List<Category> listInHome() {
         List<Category> categories = this.list();
-        for(Category c:categories){
-            List<Product> products = new ProductService().listByCategory(c.getId(),0,64);
-            for(Product product:products){
+        for (Category c : categories) {
+            List<Product> products = new ProductService().listByCategory(c.getId(), 0, 64);
+            for (Product product : products) {
                 String subTitle = product.getSubTitle();
-                String shortTitle = StringUtils.substringBetween(subTitle," ");
-                if(shortTitle==null){
+                String shortTitle = StringUtils.substringBetween(subTitle, " ");
+                if (shortTitle == null) {
                     shortTitle = subTitle;
                 }
                 product.setSubTitle(shortTitle);
@@ -50,4 +58,18 @@ public class CategoryService {
         }
         return categories;
     }
+
+    /**
+     * 获取每个分类商品的数量
+     */
+    public List<Integer> getCategoryCount(List<Category> categories) {
+        List<Integer> countList = new ArrayList<>();
+        //便利category，获取每个分类的商品数量
+        for (Category category : categories) {
+            int count = new ProductService().getTotal(category.getId());
+            countList.add(count);
+        }
+        return countList;
+    }
+
 }

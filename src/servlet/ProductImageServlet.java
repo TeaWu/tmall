@@ -25,7 +25,7 @@ public class ProductImageServlet extends BaseServlet {
     private final ProductImageService service = new ProductImageService();
 
     public String list(HttpServletRequest request, HttpServletResponse response) {
-        int pid = Integer.parseInt(request.getParameter("cid"));
+        int pid = Integer.parseInt(request.getParameter("pid"));
         List<ProductImage> topImages = service.listTopImage(pid, 0, Short.MAX_VALUE);
         List<ProductImage> detailImages = service.listDetailImage(pid, 0, Short.MAX_VALUE);
         Product product = new ProductService().get(pid);

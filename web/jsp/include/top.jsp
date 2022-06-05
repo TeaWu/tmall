@@ -17,7 +17,7 @@
     <div class="top-bar">
         <span class="top-left">
             <c:if test="${empty home}">
-            <span><span class=" glyphicon glyphicon-home redColor"></span><a href="/${contextPath}">天猫首页</a></span>
+            <span><span class=" glyphicon glyphicon-home redColor"></span><a href="${contextPath}">天猫首页</a></span>
             </c:if>
             <span>喵，欢迎来天猫</span>
 

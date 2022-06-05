@@ -41,6 +41,25 @@ public class BackServletFilter implements Filter {
             response.sendRedirect(contextPath + "/admin/");
             return;
         }
+
+        if("/user_edit".equals(uri)) {
+            request.setAttribute("method", "editUser");
+            request.getRequestDispatcher("/user.servlet").forward(request, response);
+            return;
+        }
+
+        if("/user_Update".equals(uri)) {
+            request.setAttribute("method", "Update");
+            request.getRequestDispatcher("/user.servlet").forward(request, response);
+            return;
+        }
+
+        if("/user_List".equals(uri)) {
+            request.setAttribute("method", "List");
+            request.getRequestDispatcher("/user.servlet").forward(request, response);
+            return;
+        }
+
         //配置超级管理员权限的方法
         String[] superAdminPage = new String[]{"delete", "addUpdate", "updatePropertyValue",
         };
@@ -80,8 +99,8 @@ public class BackServletFilter implements Filter {
         }
 
         //配置不需登录即可访问的方法：
-        String[] noNeedAuthPage = new String[]{"home", "checkLogin", "register",
-                "login", "product", "category", "loginIn", "registerAdd", "search"};
+        String[] noNeedAuthPage = new String[]{"home", "self", "shop", "checkLogin", "register",
+                "login", "forget", "product", "category", "loginIn", "registerAdd", "search"};
         //如果uri根目录不含 "." (非资源)则统一交由前台处理
         //contains()当且仅当此字符串包含指定的字符值序列时返回true
         if (!(uri.contains(".") || (uri.lastIndexOf('/') > 0))) {

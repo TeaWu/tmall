@@ -2,6 +2,7 @@ package util;
 
 /**
  * 分页类
+ * @author littlestar
  */
 public class Pagination {
     private int start;
@@ -77,7 +78,7 @@ public class Pagination {
             lastPage = total - total % count;
         }
         //total < count
-        lastPage = lastPage <0 ? 0: lastPage;
+        lastPage = Math.max(lastPage, 0);
         return lastPage;
     }
 

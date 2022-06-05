@@ -20,6 +20,15 @@ public class UserService {
         dao.update(bean);
     }
 
+    public void updateUser(User bean) {
+        dao.updateUser(bean);
+    }
+
+
+    public void updateReceiverInfo(String receiver, String mobile, String address, int uid) {
+        dao.updateReceiverInfo(receiver, mobile, address, uid);
+    }
+
     public void delete(int id) {
         dao.delete(id);
     }

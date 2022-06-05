@@ -16,6 +16,7 @@ public class OrderItemService {
     public void update(OrderItem bean) {
         dao.update(bean);
     }
+
     public void delete(int id) {
         dao.delete(id);
     }

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
 <main class="confirm-pay">
     <div class="buy-flow-img">
         <img src="img/buyflow_3.png">
@@ -26,7 +25,7 @@
             <tbody>
             <c:forEach items="${order.orderItems}" var="oi" varStatus="vs">
             <tr>
-                <td><img src="/pictures/product/${oi.product.firstProductImage.id}.jpg"></td>
+                <td><img src="pictures/product/${oi.product.firstProductImage.id}.jpg"></td>
                 <td class="item-title"><a href="#nowhere">${oi.product.name}</a></td>
                 <td>￥${oi.product.nowPrice}</td>
                 <td>${oi.number}</td>
@@ -49,7 +48,7 @@
             </tr>
             <tr>
                 <td width="200px">收货信息： </td>
-                <td>${order.address}，${order.receiver}， ${order.mobile}，${order.post}</td>
+                <td>${order.address}，${order.receiver}， ${order.mobile}</td>
             </tr>
             <tr>
                 <td width="200px">成交时间：</td>
@@ -62,8 +61,4 @@
             <a href="confirmed?oid=${order.id}"><button class="confirm-button">确认支付</button></a>
         </div>
     </div>
-
-
-
-
 </main>
